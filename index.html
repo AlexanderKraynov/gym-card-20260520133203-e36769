@@ -5,9 +5,663 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>Зал сегодня</title>
-  <meta http-equiv="refresh" content="0; url=artifacts/2026-05-20-first-gym.html">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f4;
+      --ink: #17201b;
+      --muted: #667066;
+      --line: #d9ded5;
+      --panel: #ffffff;
+      --soft: #edf3ea;
+      --accent: #2f6f5e;
+      --warm: #c66b3d;
+      --danger: #9d2d2d;
+      --danger-bg: #fff0eb;
+      --shadow: 0 10px 26px rgba(20, 32, 25, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    .wrap {
+      width: min(1040px, calc(100vw - 24px));
+      margin: 0 auto;
+      padding: 24px 0 38px;
+    }
+
+    header,
+    section {
+      margin-bottom: 14px;
+    }
+
+    .hero,
+    .panel,
+    .exercise {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 22px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--warm);
+      font-size: 0.78rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 4.1rem);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin-bottom: 12px;
+      font-size: 1.25rem;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      font-size: 1.02rem;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .sub {
+      margin-top: 10px;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .today {
+      min-width: 168px;
+      border-radius: 8px;
+      background: var(--soft);
+      padding: 12px;
+      text-align: right;
+    }
+
+    .today strong {
+      display: block;
+      color: var(--accent);
+      font-size: 1.3rem;
+      line-height: 1.1;
+    }
+
+    .today span {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .span-4 {
+      grid-column: span 4;
+    }
+
+    .span-8 {
+      grid-column: span 8;
+    }
+
+    .span-12 {
+      grid-column: span 12;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .danger {
+      border-left: 5px solid var(--danger);
+      background: var(--danger-bg);
+    }
+
+    .good {
+      border-left: 5px solid var(--accent);
+      background: #f8fbf7;
+    }
+
+    .list {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .list li + li {
+      margin-top: 7px;
+    }
+
+    .rules {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .rule {
+      border-radius: 8px;
+      background: var(--soft);
+      padding: 12px;
+    }
+
+    .rule strong {
+      display: block;
+      color: var(--accent);
+      font-size: 1.1rem;
+    }
+
+    .rule span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .exercise-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .exercise {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: minmax(230px, 300px) minmax(0, 1fr) minmax(116px, 160px);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .visual {
+      min-height: 172px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #111812;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .photo-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      height: 100%;
+      min-height: 172px;
+    }
+
+    .photo-pair figure {
+      margin: 0;
+      position: relative;
+      min-height: 172px;
+      overflow: hidden;
+      background: #111812;
+    }
+
+    .photo-pair img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .photo-pair figcaption,
+    .source {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: rgba(17, 24, 18, 0.78);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 850;
+    }
+
+    .source {
+      top: 8px;
+      bottom: auto;
+      color: #edf3ea;
+    }
+
+    .video-card {
+      display: block;
+      min-height: 172px;
+      color: #fff;
+      text-decoration: none;
+      position: relative;
+      background: #111812;
+    }
+
+    .video-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 172px;
+      display: block;
+      object-fit: cover;
+      opacity: 0.74;
+    }
+
+    .play {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-size: 2.4rem;
+      font-weight: 900;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.45);
+    }
+
+    .open-video {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 999px;
+      padding: 5px 9px;
+      background: rgba(47, 111, 94, 0.92);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 850;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: var(--soft);
+      color: #334238;
+      font-size: 0.82rem;
+      font-weight: 750;
+    }
+
+    .cue {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .reference {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .reference div {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fafbf8;
+      padding: 9px;
+    }
+
+    .reference b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+
+    .reference span {
+      color: #334238;
+      font-size: 0.88rem;
+    }
+
+    .weight {
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fafbf8;
+      padding: 10px;
+      text-align: right;
+    }
+
+    .weight strong {
+      display: block;
+      color: var(--accent);
+      font-size: 1.35rem;
+      line-height: 1.05;
+    }
+
+    .weight span {
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .message {
+      display: grid;
+      gap: 8px;
+      color: #2b382f;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.96rem;
+    }
+
+    .message div {
+      border-radius: 8px;
+      background: var(--soft);
+      padding: 10px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    @media (max-width: 760px) {
+      .hero,
+      .exercise {
+        grid-template-columns: 1fr;
+      }
+
+      .today,
+      .weight {
+        text-align: left;
+      }
+
+      .visual,
+      .photo-pair,
+      .photo-pair figure,
+      .video-card,
+      .video-card img {
+        min-height: 210px;
+      }
+
+      .span-4,
+      .span-8 {
+        grid-column: span 12;
+      }
+
+      .rules {
+        grid-template-columns: 1fr;
+      }
+
+      .reference {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <a href="artifacts/2026-05-20-first-gym.html">Открыть тренировку</a>
+  <main class="wrap">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Первый день в зале</p>
+        <h1>Спокойная силовая</h1>
+        <p class="sub">Задача: включить ноги, спину и кор. Без геройства, без отказа, без резких движений шеей.</p>
+      </div>
+      <div class="today">
+        <strong>45-60 мин</strong>
+        <span>весь заход</span>
+      </div>
+    </header>
+
+    <section class="grid">
+      <div class="panel span-8 good">
+        <h2>Правило веса</h2>
+        <div class="rules">
+          <div class="rule"><strong>RPE 5-6</strong><span>ощущение нагрузки</span></div>
+          <div class="rule"><strong>3-4</strong><span>повтора в запасе</span></div>
+          <div class="rule"><strong>-20%</strong><span>если шея/спина напряглись</span></div>
+        </div>
+        <p class="sub">Первый подход пробный. Если слишком легко, добавь один шаг тренажера. Если техника плывет, снизь вес.</p>
+      </div>
+
+      <div class="panel span-4 danger">
+        <h2>Стоп</h2>
+        <ul class="list">
+          <li>Головокружение, шаткость, потемнение в глазах.</li>
+          <li>Резкая необычная головная боль.</li>
+          <li>Онемение, слабость, двоение.</li>
+          <li>Боль выше 4/10.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Разминка</h2>
+      <ul class="list">
+        <li>Дорожка или эллипс: 7-8 минут, темп разговора.</li>
+        <li>Кошка-корова: 6 раз, маленькая амплитуда, голова нейтрально.</li>
+        <li>Ягодичный мост без веса: 10 раз.</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>Тренировка</h2>
+      <div class="exercise-list">
+        <article class="exercise">
+          <div class="visual" aria-label="Схема жима ногами">
+            <div class="source">ACE</div>
+            <div class="photo-pair">
+              <figure>
+                <img src="assets/ace-leg-press-start.jpg" alt="Жим ногами: стартовая позиция">
+                <figcaption>старт</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/ace-leg-press-move.jpg" alt="Жим ногами: рабочая фаза">
+                <figcaption>движение</figcaption>
+              </figure>
+            </div>
+          </div>
+          <div>
+            <h3>1. Жим ногами</h3>
+            <div class="meta"><span class="tag">2 x 10-12</span><span class="tag">пауза 60-90 сек</span></div>
+            <p class="cue">Спина прижата. Не опускай платформу так глубоко, чтобы таз отрывался.</p>
+            <div class="reference">
+              <div><b>Старт</b><span>Стопы на платформе, колени примерно 90 градусов, таз и спина прижаты.</span></div>
+              <div><b>Движение</b><span>Выжимай ногами, пятки не отрывай, колени идут по линии носков.</span></div>
+              <div><b>Ошибка</b><span>Не выпрямляй колени в жесткий замок и не округляй поясницу внизу.</span></div>
+            </div>
+          </div>
+          <div class="weight"><strong>40-60 кг</strong><span>проба 30-40 кг</span></div>
+        </article>
+
+        <article class="exercise">
+          <div class="visual" aria-label="Схема горизонтальной тяги">
+            <div class="source">ACE</div>
+            <div class="photo-pair">
+              <figure>
+                <img src="assets/ace-row-start.jpg" alt="Горизонтальная тяга: стартовая позиция">
+                <figcaption>старт</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/ace-row-move.jpg" alt="Горизонтальная тяга: тяга к корпусу">
+                <figcaption>тяга</figcaption>
+              </figure>
+            </div>
+          </div>
+          <div>
+            <h3>2. Горизонтальная тяга</h3>
+            <div class="meta"><span class="tag">2 x 10-12</span><span class="tag">шея нейтрально</span></div>
+            <p class="cue">Тяни локтями. Плечи вниз, корпус не раскачивать.</p>
+            <div class="reference">
+              <div><b>Старт</b><span>Сядь ровно, грудь высокая, плечи опущены, руки вытянуты без круглой спины.</span></div>
+              <div><b>Движение</b><span>Сначала лопатки назад-вниз, потом локти к корпусу, рукоять к животу.</span></div>
+              <div><b>Ошибка</b><span>Не отклоняйся назад всем телом и не тяни подбородок вперед.</span></div>
+            </div>
+          </div>
+          <div class="weight"><strong>20-30 кг</strong><span>легче, если тянет шею</span></div>
+        </article>
+
+        <article class="exercise">
+          <div class="visual" aria-label="Схема жима от груди">
+            <div class="source">ACE</div>
+            <div class="photo-pair">
+              <figure>
+                <img src="assets/ace-chest-start.jpg" alt="Жим от груди: стартовая позиция">
+                <figcaption>старт</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/ace-chest-move.jpg" alt="Жим от груди: рабочая фаза">
+                <figcaption>жим</figcaption>
+              </figure>
+            </div>
+          </div>
+          <div>
+            <h3>3. Жим от груди</h3>
+            <div class="meta"><span class="tag">2 x 8-10</span><span class="tag">без прогиба</span></div>
+            <p class="cue">Рукояти на уровне груди. Не выталкивай голову вперед.</p>
+            <div class="reference">
+              <div><b>Старт</b><span>Рукояти на уровне середины груди, стопы на полу, лопатки мягко назад.</span></div>
+              <div><b>Движение</b><span>Жми вперед плавно, на возврате не проваливай плечи назад слишком глубоко.</span></div>
+              <div><b>Ошибка</b><span>Не зажимай шею, не поднимай плечи к ушам, не прогибай поясницу.</span></div>
+            </div>
+          </div>
+          <div class="weight"><strong>15-25 кг</strong><span>с большим запасом</span></div>
+        </article>
+
+        <article class="exercise">
+          <div class="visual" aria-label="Схема сгибания ног">
+            <a class="video-card" href="https://www.youtube.com/watch?v=_2Kd0d-JEUM" target="_blank" rel="noreferrer">
+              <img src="assets/nasm-leg-curl.jpg" alt="NASM seated leg curl video preview">
+              <span class="play">▶</span>
+              <span class="open-video">открыть видео</span>
+            </a>
+            <div class="source">NASM видео</div>
+          </div>
+          <div>
+            <h3>4. Сгибание ног</h3>
+            <div class="meta"><span class="tag">2 x 10-12</span><span class="tag">медленно</span></div>
+            <p class="cue">Без рывка. Если сводит бедро, уменьши вес.</p>
+            <div class="reference">
+              <div><b>Старт</b><span>Спина к спинке, валик чуть выше пяток, колени совпадают с осью тренажера.</span></div>
+              <div><b>Движение</b><span>Сгибай ноги вниз/назад за счет задней поверхности бедра, возвращай медленно.</span></div>
+              <div><b>Ошибка</b><span>Не дергай вес и не отрывай таз от сиденья.</span></div>
+            </div>
+          </div>
+          <div class="weight"><strong>15-25 кг</strong><span>проба 10-15 кг</span></div>
+        </article>
+
+        <article class="exercise">
+          <div class="visual" aria-label="Схема верхнего блока к груди">
+            <div class="source">ACE</div>
+            <div class="photo-pair">
+              <figure>
+                <img src="assets/ace-lat-start.jpg" alt="Верхний блок: стартовая позиция">
+                <figcaption>старт</figcaption>
+              </figure>
+              <figure>
+                <img src="assets/ace-lat-move.jpg" alt="Верхний блок: тяга к груди">
+                <figcaption>тяга</figcaption>
+              </figure>
+            </div>
+          </div>
+          <div>
+            <h3>5. Верхний блок к груди</h3>
+            <div class="meta"><span class="tag">2 x 10</span><span class="tag">не за голову</span></div>
+            <p class="cue">Голова прямо. Локти вниз, плечи не к ушам.</p>
+            <div class="reference">
+              <div><b>Старт</b><span>Сядь под блоком, корпус чуть назад, грудь высокая, шея длинная.</span></div>
+              <div><b>Движение</b><span>Тяни рукоять к верхней части груди, локти идут вниз и чуть назад.</span></div>
+              <div><b>Ошибка</b><span>Не тяни за голову, не запрокидывай шею, не дергай корпусом.</span></div>
+            </div>
+          </div>
+          <div class="weight"><strong>25-35 кг</strong><span>снизь, если дергаешь</span></div>
+        </article>
+
+        <article class="exercise">
+          <div class="visual" aria-label="Схема Pallof press">
+            <a class="video-card" href="https://www.youtube.com/watch?v=GfTQ0RLZ7GA" target="_blank" rel="noreferrer">
+              <img src="assets/catalyst-pallof.jpg" alt="Catalyst Athletics Pallof Press video preview">
+              <span class="play">▶</span>
+              <span class="open-video">открыть видео</span>
+            </a>
+            <div class="source">Catalyst видео</div>
+          </div>
+          <div>
+            <h3>6. Pallof press</h3>
+            <div class="meta"><span class="tag">2 x 8-10/сторона</span><span class="tag">кор</span></div>
+            <p class="cue">Боком к блоку. Выжал руки вперед, корпус не разворачивается.</p>
+            <div class="reference">
+              <div><b>Старт</b><span>Встань боком к блоку, рукоять у груди, стопы устойчиво, ребра вниз.</span></div>
+              <div><b>Движение</b><span>Выжми руки вперед и удержи корпус неподвижным, потом верни к груди.</span></div>
+              <div><b>Ошибка</b><span>Если тебя разворачивает к блоку, вес слишком большой.</span></div>
+            </div>
+          </div>
+          <div class="weight"><strong>5-10 кг</strong><span>1-2 плитки</span></div>
+        </article>
+
+        <article class="exercise">
+          <div class="visual" aria-label="Схема Bird dog">
+            <a class="video-card" href="https://www.youtube.com/watch?v=ZdAHe9_HeEw" target="_blank" rel="noreferrer">
+              <img src="assets/nasm-bird-dog.jpg" alt="NASM Bird Dog video preview">
+              <span class="play">▶</span>
+              <span class="open-video">открыть видео</span>
+            </a>
+            <div class="source">NASM видео</div>
+          </div>
+          <div>
+            <h3>7. Bird dog</h3>
+            <div class="meta"><span class="tag">2 x 6/сторона</span><span class="tag">пауза 2 сек</span></div>
+            <p class="cue">Смотри в пол. Таз ровно, без прогиба поясницы.</p>
+            <div class="reference">
+              <div><b>Старт</b><span>Ладони под плечами, колени под тазом, взгляд в пол.</span></div>
+              <div><b>Движение</b><span>Вытяни противоположные руку и ногу, пауза 2 секунды, верни спокойно.</span></div>
+              <div><b>Ошибка</b><span>Не крути таз, не проваливай поясницу, не задирай голову.</span></div>
+            </div>
+          </div>
+          <div class="weight"><strong>без веса</strong><span>контроль</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel span-4">
+        <h2>Финиш</h2>
+        <ul class="list">
+          <li>8-12 минут ходьбы или велотренажера.</li>
+          <li>Бассейн: 10-15 минут легко.</li>
+          <li>Не плыви с постоянно задранной головой.</li>
+        </ul>
+      </div>
+
+      <div class="panel span-8">
+        <h2>После зала напиши мне</h2>
+        <div class="message">
+          <div>Сделал: жим ногами 50x12/12, тяга 25x10/10...</div>
+          <div>Самочувствие: голова 0 -> 0, шея 1 -> 1, поясница 2 -> 2.</div>
+          <div>Что не зашло: например, верхний блок тянул шею.</div>
+          <div>Энергия после: 6/10. Бассейн/кардио: 10 минут.</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Если будет непонятно упражнение, спрашивай в Codex по названию, я дам короткое объяснение или замену.
+    </footer>
+  </main>
 </body>
 </html>
